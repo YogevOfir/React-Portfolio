@@ -18,7 +18,7 @@ export const EXPERIENCES = [
   {
     year: "2025 - 2025",
     role: "Meta React Specialization",
-    company: "Coursera - Meta",
+    company: "Coursera",
     description: `Completed the Meta React Specialization through Coursera, mastering front-end development with React, including component-based architecture, state management, and responsive design principles.`,
     technologies: ["React.js", "JavaScript"],
   },
