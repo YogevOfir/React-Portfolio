@@ -20,12 +20,12 @@ const Contact = () => {
             >
                 {CONTACT.phoneNo}
             </motion.p>
-            <motion.a 
+             <motion.a 
              whileInView={{ opacity: 1, x: 0 }}
-             initial={{ opacity: 0, x: -100 }}
+             initial={{ opacity: 0, x: 100 }}
              transition={{ duration: 1 }}
              href={`mailto:${CONTACT.email}`} 
-             className="border-b" aria-label="Send email"
+              className="my-4 inline-block border-b" aria-label="Send email"
             >
                 {CONTACT.email}
             </motion.a>
