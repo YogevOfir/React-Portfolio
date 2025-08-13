@@ -1,4 +1,4 @@
-import logo from "../assets/kevinRushLogo.png"
+import logo from "../assets/yoLogo.png"
 import { FaGithub } from "react-icons/fa"
 import { FaLinkedin } from "react-icons/fa"
 import { FaFacebook } from "react-icons/fa"

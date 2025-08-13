@@ -2,6 +2,9 @@ import project1 from "../assets/projects/project-1.jpg";
 import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
 import project4 from "../assets/projects/project-4.jpg";
+import drone_segmentation from "../assets/projects/Drone_segmentation.png";
+import notes_app from "../assets/projects/notes_app.png";
+import techNaim from "../assets/projects/TechNaim.jpeg";
 
 export const HERO_CONTENT = `I'm a recent graduate in Computer Science and Mathematics with a passion for building impactful technology. I thrive on solving challenging problems, learning quickly, and continuously improving. With a detail-oriented mindset and strong communication skills, I'm eager to contribute to innovative projects and grow as a developer.`;
 
@@ -41,14 +44,14 @@ export const EXPERIENCES = [
 export const PROJECTS = [
   {
     title: "TechNaim - Real-Time Technician Tracking & Scheduling",
-    image: project1,
+    image: techNaim,
     description:
       "A real-time technician tracking and scheduling system designed to optimize field operations, enhance workforce coordination, and improve service delivery efficiency.",
     technologies: ["React-Native", "Type-Script", "CSS", "JavaScript", "Node.js", "MongoDB", "Express.js"],
   },
   {
     title: "Semantic Template Matching for UAV Localization",
-    image: project2,
+    image: drone_segmentation,
     description:
       "A research project focused on enhancing unmanned aerial vehicle positioning accuracy using semantic image analysis and template matching techniques.",
     technologies: ["HTML", "CSS", "Angular", "Firebase"],
@@ -62,7 +65,7 @@ export const PROJECTS = [
   },
   {
     title: "NoteOverTheWorld",
-    image: project4,
+    image: notes_app,
     description:
       "A location-based note-taking app that allows users to save notes and visualize them on an interactive map using Google Maps integration.",
     technologies: ["Flutter", "FireBase"],
