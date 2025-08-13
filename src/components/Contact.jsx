@@ -28,8 +28,7 @@ const Contact = () => {
             >
                 {CONTACT.phoneNo}
             </motion.p>
-            <a href="#" className="border-b"
-            >
+            <a href={`mailto:${CONTACT.email}`} className="border-b" aria-label="Send email">
                 {CONTACT.email}
             </a>
         </div>

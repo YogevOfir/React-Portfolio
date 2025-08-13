@@ -5,6 +5,7 @@ import project4 from "../assets/projects/project-4.jpg";
 import drone_segmentation from "../assets/projects/Drone_segmentation.png";
 import notes_app from "../assets/projects/notes_app.png";
 import techNaim from "../assets/projects/TechNaim.jpeg";
+import portfolio from "../assets/projects/portfolio_image.png";
 
 export const HERO_CONTENT = `I'm a recent graduate in Computer Science and Mathematics with a passion for building impactful technology. I thrive on solving challenging problems, learning quickly, and continuously improving. With a detail-oriented mindset and strong communication skills, I'm eager to contribute to innovative projects and grow as a developer.`;
 
@@ -45,6 +46,7 @@ export const PROJECTS = [
   {
     title: "TechNaim - Real-Time Technician Tracking & Scheduling",
     image: techNaim,
+    url: "https://github.com/YogevOfir/TechNaim",
     description:
       "A real-time technician tracking and scheduling system designed to optimize field operations, enhance workforce coordination, and improve service delivery efficiency.",
     technologies: ["React-Native", "Type-Script", "CSS", "JavaScript", "Node.js", "MongoDB", "Express.js"],
@@ -52,13 +54,15 @@ export const PROJECTS = [
   {
     title: "Semantic Template Matching for UAV Localization",
     image: drone_segmentation,
+    url: "https://github.com/YogevOfir/Semantic-Template-Matching-for-UAV-Localization",
     description:
       "A research project focused on enhancing unmanned aerial vehicle positioning accuracy using semantic image analysis and template matching techniques.",
     technologies: ["HTML", "CSS", "Angular", "Firebase"],
   },
   {
     title: "Portfolio Website",
-    image: project3,
+    image: portfolio,
+    url: "https://github.com/YogevOfir/React-Portfolio",
     description:
       "A personal portfolio website showcasing projects, skills, and contact information.",
     technologies: ["React", "TailwindCSS"],
@@ -66,6 +70,7 @@ export const PROJECTS = [
   {
     title: "NoteOverTheWorld",
     image: notes_app,
+    url: "https://github.com/YogevOfir/NoteOverTheWorld",
     description:
       "A location-based note-taking app that allows users to save notes and visualize them on an interactive map using Google Maps integration.",
     technologies: ["Flutter", "FireBase"],
