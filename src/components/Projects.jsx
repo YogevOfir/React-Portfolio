@@ -13,7 +13,14 @@ const Projects = () => {
         </motion.h2>
         <div>
             {PROJECTS.map((project, index) => (
-                <div key={index} className="mb-8 flex flex-wrap lg:justify-center">
+                <a
+                    key={index}
+                    href={project.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Open ${project.title}`}
+                    className="mb-8 flex flex-wrap lg:justify-center rounded-lg transition transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-900/20 focus:outline-none cursor-pointer"
+                >
                     <motion.div
                         whileInView={{ opacity: 1, x: 0 }}
                         initial={{ opacity: 0, x: -100 }}
@@ -36,12 +43,12 @@ const Projects = () => {
                         <h6 className="mb-2 font-semibold">{project.title}</h6>
                         <p className="mb-4 text-neutral-400">{project.description}</p>
                         {project.technologies.map((tech, index) => (
-                            <span key={index} className="mr-2 rounded bg-neutral-900 px-2 py-1 text-sm font-medium text-purple-900">
+                            <span key={index} className="mr-2 rounded bg-neutral-900 px-2 py-1 text-sm font-medium text-purple-900 whitespace-nowrap">
                                 {tech}
                             </span>
                         ))}
                     </motion.div>
-                </div>
+                </a>
             ))}
         </div>
     </div>
