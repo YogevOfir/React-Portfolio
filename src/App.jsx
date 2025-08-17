@@ -15,6 +15,13 @@ import AnalyticsDashboard from './components/AnalyticsDashboard'
 import { GameProvider } from './context/GameContext'
 
 const App = () => {
+
+  // ⬅️ counter to the website
+  useEffect(() => {
+    incrementVisitCount()
+  }, [])
+
+
   return (
     <GameProvider>
       <div className="overflow-x-hidden text-neutral-300 antialiased selection:bg-cyan-300 selection:text-cyan-900">
