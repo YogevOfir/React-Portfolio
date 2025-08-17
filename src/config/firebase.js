@@ -1,9 +1,8 @@
 // src/config/firebase.js
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, runTransaction, collection, getDocs } from 'firebase/firestore';
 import { getAnalytics, logEvent } from 'firebase/analytics';
-import { collection, getDocs } from 'firebase/firestore';
 
 // ✅ Firebase config
 const firebaseConfig = {
@@ -21,6 +20,34 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const analytics = getAnalytics(app);
 
+// -------- Session --------
+export const initializeSession = () => {
+  if (!sessionStorage.getItem('sessionId')) {
+    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    sessionStorage.setItem('sessionId', sessionId);
+  }
+  return sessionStorage.getItem('sessionId');
+};
+initializeSession();
+
+// -------- Firestore Visit Counter --------
+export const incrementVisitCounter = async () => {
+  const counterRef = doc(db, "analytics", "visits");
+  try {
+    await runTransaction(db, async (transaction) => {
+      const snapshot = await transaction.get(counterRef);
+      if (!snapshot.exists()) {
+        transaction.set(counterRef, { count: 1 });
+      } else {
+        const newCount = (snapshot.data().count || 0) + 1;
+        transaction.update(counterRef, { count: newCount });
+      }
+    });
+  } catch (err) {
+    console.error("Error incrementing counter:", err);
+  }
+};
+
 // -------- Tracking functions --------
 export const trackPageView = async (pageName) => {
   logEvent(analytics, 'page_view', {
@@ -28,6 +55,9 @@ export const trackPageView = async (pageName) => {
     sessionId: sessionStorage.getItem('sessionId'),
     timestamp: Date.now()
   });
+
+  // 🔥 also increment Firestore counter
+  incrementVisitCounter();
 };
 
 export const trackUserInteraction = async (action, data = {}) => {
@@ -55,79 +85,20 @@ export const trackPortfolioCompletion = async (userChoices = {}) => {
   });
 };
 
-// -------- Session --------
-export const initializeSession = () => {
-  if (!sessionStorage.getItem('sessionId')) {
-    const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    sessionStorage.setItem('sessionId', sessionId);
-  }
-  return sessionStorage.getItem('sessionId');
-};
-initializeSession();
-
-// -------- Custom Analytics Data --------
-export const getAnalyticsData = async () => {
+// -------- Custom Analytics Data (Firestore counter) --------
+export const getVisitCount = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "analyticsEvents"));
-
-    let totalVisitors = 0;
-    let completedVisitors = 0;
-    let pageViews = 0;
-    const techChoices = {};
-    const interests = {};
-    const projects = {};
-    const recentActivity = [];
-
-    snapshot.forEach((doc) => {
-      const event = doc.data();
-      totalVisitors++;
-
-      if (event.type === "page_view") pageViews++;
-
-      if (event.type === "portfolio_completed") {
-        completedVisitors++;
-        if (event.details?.techStack) {
-          techChoices[event.details.techStack] =
-            (techChoices[event.details.techStack] || 0) + 1;
-        }
-        if (event.details?.interest) {
-          interests[event.details.interest] =
-            (interests[event.details.interest] || 0) + 1;
-        }
-        if (event.details?.project) {
-          projects[event.details.project] =
-            (projects[event.details.project] || 0) + 1;
-        }
+    const counterDoc = await getDocs(collection(db, "analytics"));
+    let count = 0;
+    counterDoc.forEach((docSnap) => {
+      if (docSnap.id === "visits") {
+        count = docSnap.data().count || 0;
       }
-
-      recentActivity.push({
-        action: event.type,
-        timestamp: event.timestamp?.toDate
-          ? event.timestamp.toDate().getTime()
-          : Date.now(),
-      });
     });
-
-    return {
-      success: true,
-      data: {
-        totalVisitors,
-        completedVisitors,
-        completionRate: totalVisitors
-          ? Math.round((completedVisitors / totalVisitors) * 100)
-          : 0,
-        pageViews,
-        techChoices,
-        interests,
-        projects,
-        recentActivity: recentActivity
-          .sort((a, b) => b.timestamp - a.timestamp)
-          .slice(0, 10),
-      },
-    };
+    return count;
   } catch (error) {
-    console.error("Error fetching analytics data:", error);
-    return { success: false, error: error.message };
+    console.error("Error fetching visit count:", error);
+    return 0;
   }
 };
 
