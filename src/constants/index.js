@@ -1,7 +1,3 @@
-import project1 from "../assets/projects/project-1.jpg";
-import project2 from "../assets/projects/project-2.jpg";
-import project3 from "../assets/projects/project-3.jpg";
-import project4 from "../assets/projects/project-4.jpg";
 import drone_segmentation from "../assets/projects/Drone_segmentation.png";
 import notes_app from "../assets/projects/notes_app.png";
 import techNaim from "../assets/projects/TechNaim.jpeg";

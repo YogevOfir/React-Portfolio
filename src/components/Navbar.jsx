@@ -2,6 +2,8 @@ import logo from "../assets/yoLogo.png"
 import { FaGithub } from "react-icons/fa"
 import { FaLinkedin } from "react-icons/fa"
 import { FaFacebook } from "react-icons/fa"
+import { FaDownload } from "react-icons/fa"
+import cvFile from "../assets/YogevOfir_CV.pdf"
 
 
 const Navbar = () => {
@@ -19,6 +21,14 @@ const Navbar = () => {
         <a href="https://www.facebook.com/yogev.ofir" target="_blank" rel="noreferrer" aria-label="FaceBook">
           <FaFacebook />
         </a>
+        <a 
+         href={cvFile} 
+         download="Yogev_Ofir_CV.pdf" 
+         aria-label="Download Resume"
+        >
+          <FaDownload />
+        </a>
+        
     </div>
   </nav>
 }
