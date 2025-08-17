@@ -9,7 +9,7 @@ import idf from "../assets/diplomas/IDF.jpeg"
 
 export const HERO_CONTENT = `I'm a recent graduate in Computer Science and Mathematics with a passion for building impactful technology. I thrive on solving challenging problems, learning quickly, and continuously improving. With a detail-oriented mindset and strong communication skills, I'm eager to contribute to innovative projects and grow as a developer.`;
 
-export const ABOUT_TEXT = `As a versatile full-stack developer, I specialize in creating efficient and user-friendly applications for both mobile and web platforms. My technical toolkit includes React Native, Flutter, Java, C++, Python, along with experience in frameworks like React, Node.js, and databases such as FireBase and MongoDB. I enjoy working across the stack—from designing intuitive interfaces to building robust backend systems—and I'm always exploring new technologies to expand my capabilities. Whether collaborating with a team or working independently, I bring a self-driven approach and a commitment to delivering high-quality solutions.`;
+export const ABOUT_TEXT = `As a versatile full-stack developer, I specialize in creating efficient and user-friendly applications for both mobile and web platforms. My technical toolkit includes Java Script, React Native, Flutter, Java, C++, Python, along with experience in frameworks like React, Node.js, and databases such as FireBase and MongoDB. I enjoy working across the stack—from designing intuitive interfaces to building robust backend systems—and I'm always exploring new technologies to expand my capabilities. Whether collaborating with a team or working independently, I bring a self-driven approach and a commitment to delivering high-quality solutions.`;
 
 export const EXPERIENCES = [
   {
