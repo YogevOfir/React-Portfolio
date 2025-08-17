@@ -7,13 +7,13 @@ import { collection, getDocs } from 'firebase/firestore';
 
 // ✅ Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyDLi8kAIKzbOBIUajVjgKRLV62_gmdiNEI",
-  authDomain: "portfolio-cda03.firebaseapp.com",
-  projectId: "portfolio-cda03",
-  storageBucket: "portfolio-cda03.appspot.com",
-  messagingSenderId: "787586669322",
-  appId: "1:787586669322:web:09ddfca1fb0cd1d3dbf8f3",
-  measurementId: "G-6PREME4JJN"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // ✅ Init
