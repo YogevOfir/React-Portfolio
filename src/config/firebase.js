@@ -1,66 +1,61 @@
-// Firebase configuration for the gamified portfolio
-// This file contains placeholder configuration for future Firebase integration
+// src/config/firebase.js
 
-// TODO: Replace with your actual Firebase config
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAnalytics, logEvent } from 'firebase/analytics';
+import { collection, getDocs } from 'firebase/firestore';
+
+// ✅ Firebase config
 const firebaseConfig = {
-  apiKey: "your-api-key",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "your-sender-id",
-  appId: "your-app-id"
+  apiKey: "AIzaSyDLi8kAIKzbOBIUajVjgKRLV62_gmdiNEI",
+  authDomain: "portfolio-cda03.firebaseapp.com",
+  projectId: "portfolio-cda03",
+  storageBucket: "portfolio-cda03.appspot.com",
+  messagingSenderId: "787586669322",
+  appId: "1:787586669322:web:09ddfca1fb0cd1d3dbf8f3",
+  measurementId: "G-6PREME4JJN"
 };
 
-// Firebase initialization (commented out until you add firebase dependency)
-// import { initializeApp } from 'firebase/app';
-// import { getFirestore } from 'firebase/firestore';
+// ✅ Init
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
+export const analytics = getAnalytics(app);
 
-// const app = initializeApp(firebaseConfig);
-// export const db = getFirestore(app);
-
-// Placeholder functions for user choice storage
-export const saveUserChoice = async (section, choice) => {
-  try {
-    // TODO: Implement Firebase save
-    console.log(`Saving ${section}:`, choice);
-    
-    // Example Firebase save (uncomment when ready):
-    // const docRef = await addDoc(collection(db, "userChoices"), {
-    //   section,
-    //   choice,
-    //   timestamp: new Date(),
-    //   sessionId: sessionStorage.getItem('sessionId') || 'anonymous'
-    // });
-    
-    // For now, save to localStorage as fallback
-    const existingChoices = JSON.parse(localStorage.getItem('portfolioChoices') || '{}');
-    existingChoices[section] = {
-      choice,
-      timestamp: new Date().toISOString(),
-      sessionId: sessionStorage.getItem('sessionId') || 'anonymous'
-    };
-    localStorage.setItem('portfolioChoices', JSON.stringify(existingChoices));
-    
-    return { success: true, id: 'local' };
-  } catch (error) {
-    console.error('Error saving user choice:', error);
-    return { success: false, error: error.message };
-  }
+// -------- Tracking functions --------
+export const trackPageView = async (pageName) => {
+  logEvent(analytics, 'page_view', {
+    page_name: pageName,
+    sessionId: sessionStorage.getItem('sessionId'),
+    timestamp: Date.now()
+  });
 };
 
-export const getUserChoices = async () => {
-  try {
-    // TODO: Implement Firebase fetch
-    // For now, return from localStorage
-    const choices = JSON.parse(localStorage.getItem('portfolioChoices') || '{}');
-    return { success: true, data: choices };
-  } catch (error) {
-    console.error('Error fetching user choices:', error);
-    return { success: false, error: error.message };
-  }
+export const trackUserInteraction = async (action, data = {}) => {
+  logEvent(analytics, 'user_interaction', {
+    action,
+    ...data,
+    sessionId: sessionStorage.getItem('sessionId'),
+    timestamp: Date.now()
+  });
 };
 
-// Session management
+export const trackSectionUnlock = async (sectionName) => {
+  logEvent(analytics, 'section_unlocked', {
+    section_name: sectionName,
+    sessionId: sessionStorage.getItem('sessionId'),
+    timestamp: Date.now()
+  });
+};
+
+export const trackPortfolioCompletion = async (userChoices = {}) => {
+  logEvent(analytics, 'portfolio_completed', {
+    ...userChoices,
+    sessionId: sessionStorage.getItem('sessionId'),
+    timestamp: Date.now()
+  });
+};
+
+// -------- Session --------
 export const initializeSession = () => {
   if (!sessionStorage.getItem('sessionId')) {
     const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -68,24 +63,71 @@ export const initializeSession = () => {
   }
   return sessionStorage.getItem('sessionId');
 };
+initializeSession();
 
-// Analytics tracking (placeholder)
-export const trackEvent = (eventName, data) => {
+// -------- Custom Analytics Data --------
+export const getAnalyticsData = async () => {
   try {
-    // TODO: Implement Firebase Analytics
-    console.log(`Event: ${eventName}`, data);
-    
-    // Save to localStorage for now
-    const events = JSON.parse(localStorage.getItem('portfolioEvents') || '[]');
-    events.push({
-      event: eventName,
-      data,
-      timestamp: new Date().toISOString(),
-      sessionId: sessionStorage.getItem('sessionId')
+    const snapshot = await getDocs(collection(db, "analyticsEvents"));
+
+    let totalVisitors = 0;
+    let completedVisitors = 0;
+    let pageViews = 0;
+    const techChoices = {};
+    const interests = {};
+    const projects = {};
+    const recentActivity = [];
+
+    snapshot.forEach((doc) => {
+      const event = doc.data();
+      totalVisitors++;
+
+      if (event.type === "page_view") pageViews++;
+
+      if (event.type === "portfolio_completed") {
+        completedVisitors++;
+        if (event.details?.techStack) {
+          techChoices[event.details.techStack] =
+            (techChoices[event.details.techStack] || 0) + 1;
+        }
+        if (event.details?.interest) {
+          interests[event.details.interest] =
+            (interests[event.details.interest] || 0) + 1;
+        }
+        if (event.details?.project) {
+          projects[event.details.project] =
+            (projects[event.details.project] || 0) + 1;
+        }
+      }
+
+      recentActivity.push({
+        action: event.type,
+        timestamp: event.timestamp?.toDate
+          ? event.timestamp.toDate().getTime()
+          : Date.now(),
+      });
     });
-    localStorage.setItem('portfolioEvents', JSON.stringify(events));
+
+    return {
+      success: true,
+      data: {
+        totalVisitors,
+        completedVisitors,
+        completionRate: totalVisitors
+          ? Math.round((completedVisitors / totalVisitors) * 100)
+          : 0,
+        pageViews,
+        techChoices,
+        interests,
+        projects,
+        recentActivity: recentActivity
+          .sort((a, b) => b.timestamp - a.timestamp)
+          .slice(0, 10),
+      },
+    };
   } catch (error) {
-    console.error('Error tracking event:', error);
+    console.error("Error fetching analytics data:", error);
+    return { success: false, error: error.message };
   }
 };
 

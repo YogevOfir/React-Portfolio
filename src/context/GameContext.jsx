@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { trackSectionUnlock, trackPortfolioCompletion, trackUserInteraction } from '../config/firebase';
 
 const GameContext = createContext();
 
@@ -37,11 +38,14 @@ export const GameProvider = ({ children }) => {
   const allUnlocked = Object.values(gameState).every(section => section.unlocked);
 
   // Unlock sections based on user choices
-  const unlockSection = (sectionName) => {
+  const unlockSection = async (sectionName) => {
     setGameState(prev => ({
       ...prev,
       [sectionName]: { ...prev[sectionName], unlocked: true }
     }));
+    
+    // Track section unlock in analytics
+    await trackSectionUnlock(sectionName);
   };
 
   // Complete sections
@@ -53,30 +57,42 @@ export const GameProvider = ({ children }) => {
   };
 
   // Handle technology selection
-  const handleTechnologySelection = (technologies) => {
+  const handleTechnologySelection = async (technologies) => {
     setUserChoices(prev => ({ ...prev, selectedTechnologies: technologies }));
+    
+    // Track user interaction
+    await trackUserInteraction('technology_selection', { technologies });
+    
     if (technologies.length >= 2) {
-      unlockSection('experience');
+      await unlockSection('experience');
       completeSection('technologies');
     }
   };
 
   // Handle experience answer
-  const handleExperienceAnswer = (answer) => {
+  const handleExperienceAnswer = async (answer) => {
     setUserChoices(prev => ({ ...prev, experienceAnswer: answer }));
-    unlockSection('projects');
+    
+    // Track user interaction
+    await trackUserInteraction('experience_answer', { answer });
+    
+    await unlockSection('projects');
     completeSection('experience');
   };
 
   // Handle project selection
-  const handleProjectSelection = (project) => {
+  const handleProjectSelection = async (project) => {
     setUserChoices(prev => ({ ...prev, selectedProject: project }));
-    unlockSection('contact');
+    
+    // Track user interaction
+    await trackUserInteraction('project_selection', { project });
+    
+    await unlockSection('contact');
     completeSection('projects');
   };
 
   // Skip all sections
-  const skipGame = () => {
+  const skipGame = async () => {
     setIsSkipped(true);
     setGameState(prev => {
       const newState = {};
@@ -85,42 +101,17 @@ export const GameProvider = ({ children }) => {
       });
       return newState;
     });
+    
+    // Track skip action
+    await trackUserInteraction('game_skipped', { timestamp: new Date().toISOString() });
   };
 
-  // Firebase integration functions (placeholder for now)
-  const saveUserChoice = async (section, choice) => {
-    try {
-      // TODO: Implement Firebase save
-      console.log(`Saving ${section}:`, choice);
-      // await firebase.firestore().collection('userChoices').add({
-      //   section,
-      //   choice,
-      //   timestamp: new Date(),
-      //   sessionId: sessionStorage.getItem('sessionId')
-      // });
-    } catch (error) {
-      console.error('Error saving user choice:', error);
-    }
-  };
-
-  // Save choices when they change
+  // Track portfolio completion when all sections are unlocked
   useEffect(() => {
-    if (userChoices.selectedTechnologies.length > 0) {
-      saveUserChoice('technologies', userChoices.selectedTechnologies);
+    if (allUnlocked && !isSkipped) {
+      trackPortfolioCompletion(userChoices);
     }
-  }, [userChoices.selectedTechnologies]);
-
-  useEffect(() => {
-    if (userChoices.experienceAnswer) {
-      saveUserChoice('experience', userChoices.experienceAnswer);
-    }
-  }, [userChoices.experienceAnswer]);
-
-  useEffect(() => {
-    if (userChoices.selectedProject) {
-      saveUserChoice('projects', userChoices.selectedProject);
-    }
-  }, [userChoices.selectedProject]);
+  }, [allUnlocked, isSkipped, userChoices]);
 
   const value = {
     gameState,
@@ -133,8 +124,7 @@ export const GameProvider = ({ children }) => {
     handleTechnologySelection,
     handleExperienceAnswer,
     handleProjectSelection,
-    skipGame,
-    saveUserChoice
+    skipGame
   };
 
   return (

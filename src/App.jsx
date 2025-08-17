@@ -11,6 +11,7 @@ import TechnologySelector from './components/TechnologySelector'
 import ExperienceQuestion from './components/ExperienceQuestion'
 import ProjectSelector from './components/ProjectSelector'
 import Congratulations from './components/Congratulations'
+import AnalyticsDashboard from './components/AnalyticsDashboard'
 import { GameProvider } from './context/GameContext'
 
 const App = () => {
@@ -22,7 +23,7 @@ const App = () => {
           bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
         </div>
         
-        <div className="container mx-auto px-8 pt-3">
+        <div className="container mx-auto px-8 pt-8">
           <Navbar />
           
           {/* Hero Section - Always unlocked */}
@@ -60,6 +61,9 @@ const App = () => {
           <SectionWrapper sectionKey="contact">
             <Contact />
           </SectionWrapper>
+
+          {/* Analytics Dashboard - Always visible for you to track performance */}
+          <AnalyticsDashboard />
         </div>
       </div>
     </GameProvider>
