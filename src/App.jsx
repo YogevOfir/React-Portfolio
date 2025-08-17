@@ -63,7 +63,7 @@ const App = () => {
           </SectionWrapper>
 
           {/* Analytics Dashboard - Always visible for you to track performance */}
-          <AnalyticsDashboard />
+          {/* <AnalyticsDashboard /> */}
         </div>
       </div>
     </GameProvider>
