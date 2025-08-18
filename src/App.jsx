@@ -13,12 +13,13 @@ import ProjectSelector from './components/ProjectSelector'
 import Congratulations from './components/Congratulations'
 import AnalyticsDashboard from './components/AnalyticsDashboard'
 import { GameProvider } from './context/GameContext'
+import { incrementVisitCounter } from './config/firebase';
 
 const App = () => {
 
   // ⬅️ counter to the website
   useEffect(() => {
-    incrementVisitCount()
+    incrementVisitCounter()
   }, [])
 
 
