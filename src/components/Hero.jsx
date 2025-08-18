@@ -1,5 +1,5 @@
 import { HERO_CONTENT } from "../constants"
-import profilePic from "../assets/kevinRushProfile.png"
+import profilePic from "../assets/Hero.jpeg"
 import { motion } from "framer-motion"
 import { FaDownload } from "react-icons/fa"
 import cvFile from "../assets/YogevOfir_CV.pdf"
@@ -61,13 +61,13 @@ const Hero = () => {
             </div>
         </div>
         <div className="w-full lg:w-1/2 lg:p-8">
-            {/* <div className="flex justify-center">
+            <div className="flex justify-center">
                 <motion.img 
                  initial={{x: 100, opacity: 0}}
                  animate={{x: 0, opacity: 1}}
                  transition={{duration: 1, delay: 1.5}}
                  src={profilePic} alt="Yogev Ofir" />
-            </div> */}
+            </div>
         </div>
     </div>
   </div>
