@@ -13,14 +13,23 @@ import ProjectSelector from './components/ProjectSelector'
 import Congratulations from './components/Congratulations'
 import AnalyticsDashboard from './components/AnalyticsDashboard'
 import { GameProvider } from './context/GameContext'
-import { incrementVisitCounter } from './config/firebase';
+import { initializeSession, incrementTotalVisits, incrementUniqueVisitors } from './config/firebase'; 
+
 
 const App = () => {
 
   // ⬅️ counter to the website
   useEffect(() => {
-    incrementVisitCounter()
-  }, [])
+    // ➡️ Always increment total visits on every page load
+    incrementTotalVisits();
+
+    const isNewSession = initializeSession();
+    if (isNewSession) {
+      // ➡️ Only increment unique visitors for new sessions
+      incrementUniqueVisitors();
+    }
+  }, []); // The empty array ensures this runs once when the component mounts
+
 
 
   return (
