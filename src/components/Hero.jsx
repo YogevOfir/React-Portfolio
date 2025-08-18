@@ -1,5 +1,5 @@
 import { HERO_CONTENT } from "../constants"
-import profilePic from "../assets/Hero.jpeg"
+import profilePic from "../assets/hero.jpeg"
 import { motion } from "framer-motion"
 import { FaDownload } from "react-icons/fa"
 import cvFile from "../assets/YogevOfir_CV.pdf"
