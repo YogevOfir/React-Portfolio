@@ -5,7 +5,7 @@ import { FaDownload } from "react-icons/fa"
 import cvFile from "../assets/YogevOfir_CV.pdf"
 
 const container = (delay) => ({
-    hidden: {x: -100, opacity: 0},
+    hidden: { x: -100, opacity: 0 },
     visible: {
         x: 0, 
         opacity: 1,
