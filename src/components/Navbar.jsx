@@ -3,7 +3,9 @@ import { FaGithub } from "react-icons/fa"
 import { FaLinkedin } from "react-icons/fa"
 import { FaFacebook } from "react-icons/fa"
 import { FaDownload } from "react-icons/fa"
+import { GrMailOption } from "react-icons/gr";
 import cvFile from "../assets/YogevOfir_CV.pdf"
+import { CONTACT } from "../constants"
 
 
 const Navbar = () => {
@@ -20,6 +22,9 @@ const Navbar = () => {
         </a>
         <a href="https://www.facebook.com/yogev.ofir" target="_blank" rel="noreferrer" aria-label="FaceBook">
           <FaFacebook />
+        </a>
+        <a href={`mailto:${CONTACT.email}`} aria-label="Email">
+          <GrMailOption />
         </a>
         <a 
          href={cvFile} 

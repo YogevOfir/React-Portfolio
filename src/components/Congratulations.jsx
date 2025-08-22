@@ -25,12 +25,12 @@ const Congratulations = () => {
         >
           <div className="flex items-center justify-center gap-2 mb-2">
             <FaStar className="text-yellow-400 text-lg" />
-            <span className="text-lg font-medium text-neutral-200">All sections unlocked!</span>
+            <span className="text-lg font-medium text-neutral-200">Thank you for your cooperation!</span>
             <FaStar className="text-yellow-400 text-lg" />
           </div>
           
           <p className="text-sm text-neutral-400 mb-3">
-            You've completed the interactive journey. Ready to connect?
+          You helped me know what to specialize in. Ready to connect?
           </p>
 
           {/* Compact User Journey Summary */}

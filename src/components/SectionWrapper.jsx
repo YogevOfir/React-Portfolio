@@ -1,7 +1,7 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useGame } from '../context/GameContext';
-import { FaLock, FaUnlock, FaCheckCircle } from 'react-icons/fa';
+import { FaLock } from 'react-icons/fa';
 
 const SectionWrapper = ({ 
   sectionKey, 
@@ -12,7 +12,6 @@ const SectionWrapper = ({
   const { gameState } = useGame();
   const section = gameState[sectionKey];
   const isUnlocked = section?.unlocked;
-  const isCompleted = section?.completed;
 
   if (!showLockOverlay || isUnlocked) {
     return (
@@ -35,12 +34,12 @@ const SectionWrapper = ({
       className={`relative ${className}`}
     >
       {/* Lock Overlay */}
-      <div className="absolute inset-0 bg-neutral-950/90 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center">
+      <div className="absolute inset-0 bg-neutral-950/90 backdrop-blur-sm rounded-lg z-10 flex items-center justify-center pointer-events-none">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-center p-8"
+          className="text-center p-8 pointer-events-auto"
         >
           <div className="mb-4">
             <FaLock className="text-6xl text-neutral-500 mx-auto mb-4" />
